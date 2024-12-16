@@ -1,2 +1,2 @@
-# steam-sentiment-analysis
+# steam-sentiment-analysis-api
  
