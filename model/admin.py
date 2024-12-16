@@ -10,6 +10,7 @@ class Admin(db.Model):
     password = db.Column(db.String(100), nullable=False)
     created_date = db.Column(db.DateTime, default=db.func.now(), nullable=False)
 
+    # relation
     steam_apps = db.relationship('SteamApp', back_populates='admin', cascade='all, delete-orphan')
 
     def __init__(self, guid: str, name: str, email: str, password: str, created_date: datetime):

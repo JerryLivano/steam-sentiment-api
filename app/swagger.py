@@ -4,8 +4,8 @@ from flasgger import Swagger
 class SwaggerConfig:
     SWAGGER_TEMPLATE = {
         "info": {
-            "title": "Scrape-ME API Documentation",
-            "description": "List of all API used in Scrape-ME system",
+            "title": "Steam Sentiment Analysis API Documentation",
+            "description": "List of all API used in Steam Sentiment Analysis system",
             "version": "1.0.0"
         },
         "securityDefinitions": {
