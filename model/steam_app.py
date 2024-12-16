@@ -20,5 +20,14 @@ class SteamApp(db.Model):
         self.created_date = created_date
         self.admin_guid = admin_guid
 
+    def to_dict(self):
+        return {
+            'guid': self.guid,
+            'app_name': self.app_name,
+            'app_id': self.app_id,
+            'created_date': self.created_date,
+            'admin_guid': self.admin_guid
+        }
+
     def __repr__(self):
         return f"<SteamApp {self.app_id}>"
