@@ -156,10 +156,10 @@ class SentimentAnalysisService:
         negative_percentage = (negative_reviews / total_reviews) * 100
 
         if positive_percentage > negative_percentage:
-            dominant_sentiment = "Positive"
+            dominant_sentiment = True
             sentiment_percentage = positive_percentage
         else:
-            dominant_sentiment = "Negative"
+            dominant_sentiment = False
             sentiment_percentage = negative_percentage
 
         return dominant_topic, summary, dominant_sentiment, sentiment_percentage

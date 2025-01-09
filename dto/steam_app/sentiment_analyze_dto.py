@@ -1,5 +1,5 @@
 class SentimentAnalyzeDto:
-    def __init__(self, summary: list[str], sentiment: str, percentage: str):
+    def __init__(self, summary: list[str], sentiment: bool, percentage: str):
         self.summary = summary
-        self.sentiment = sentiment
+        self.voted_up = sentiment
         self.percentage = percentage
