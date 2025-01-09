@@ -66,7 +66,7 @@ class SteamAppController:
             return jsonify({
                 'status': 200,
                 'message': 'Data get successfully',
-                'data': response.json()
+                'data': response.json()['applist']['apps'][70:171]
             })
         except Exception as e:
             return jsonify({
