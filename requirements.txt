@@ -10,3 +10,5 @@ requests~=2.32.3
 pandas~=2.2.3
 scikit-learn~=1.6.0
 textblob~=0.18.0.post0
+googletrans~=4.0.2
+nltk~=3.9.1

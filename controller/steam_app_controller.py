@@ -1,16 +1,19 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from dto.steam_app.create_steam_dto import CreateSteamDto
+from service.sentiment_analysis_service import SentimentAnalysisService
 from service.steam_app_service import SteamAppService
 
 
 class SteamAppController:
     def __init__(self, app: Flask, db: SQLAlchemy):
         self._steam_service = SteamAppService(db)
+        self._sentiment_service = SentimentAnalysisService()
 
         app.add_url_rule('/steam', 'get_all_steam', self.get_all_steam, methods=['GET'])
         app.add_url_rule('/steam', 'create_steam', self.create_steam, methods=['POST'])
         app.add_url_rule('/steam/<string:guid>', 'delete_steam', self.delete_steam, methods=['DELETE'])
+        app.add_url_rule('/steam/analyze/<string:app_id>', 'analyze_sentiment', self.analyze_sentiment, methods=['POST'])
 
     def get_all_steam(self):
         """
@@ -152,6 +155,37 @@ class SteamAppController:
             return jsonify({
                 'status': 200,
                 'message': 'Data deleted'
+            }), 200
+        except Exception as e:
+            return jsonify({
+                'status': 500,
+                'message': f'Error occurred: {str(e)}'
+            }), 500
+
+    def analyze_sentiment(self, app_id: str):
+        """
+            Analyze Sentiment
+            ---
+            tags: ['Steam App']
+            parameters:
+              - name: app_id
+                in: path
+                required: true
+                type: string
+                description: App ID
+            responses:
+                200:
+                    description: Data deleted successfully
+                500:
+                    description: Internal server error
+        """
+        try:
+            result = self._sentiment_service.analyze_app(app_id)
+
+            return jsonify({
+                'status': 200,
+                'message': 'Data successfully analyzed',
+                'data': result.__dict__
             }), 200
         except Exception as e:
             return jsonify({
