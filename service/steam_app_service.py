@@ -1,6 +1,11 @@
 from datetime import datetime, timedelta
 from uuid import uuid4
+
+import requests
 from flask_sqlalchemy import SQLAlchemy
+from urllib3 import request
+
+from dto.steam_app.app_reviews_dto import AppReviewsDto
 from dto.steam_app.create_steam_dto import CreateSteamDto
 from model import SteamApp
 from repository.steam_app_repository import SteamAppRepository
@@ -17,6 +22,18 @@ class SteamAppService:
         except Exception as e:
             print(e)
             return None
+
+    def get_reviews_by_app(self, app_id: str) -> list[AppReviewsDto] | None:
+        try:
+            results = requests.get(f"https://store.steampowered.com/appreviews/{app_id}?json=1&num_per_page=20").json()['reviews']
+            return [AppReviewsDto(
+                review=result['review'],
+                voted_up=result['voted_up']
+            ) for result in results]
+        except Exception as e:
+            print(e)
+            return None
+
 
     def create(self, dto: CreateSteamDto) -> int:
         try:

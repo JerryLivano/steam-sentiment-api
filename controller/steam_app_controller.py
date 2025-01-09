@@ -12,6 +12,7 @@ class SteamAppController:
         self._sentiment_service = SentimentAnalysisService()
 
         app.add_url_rule('/steam', 'get_all_steam', self.get_all_steam, methods=['GET'])
+        app.add_url_rule('/steam/reviews/<string:app_id>', 'get_reviews', self.get_reviews, methods=['GET'])
         app.add_url_rule('/steam', 'create_steam', self.create_steam, methods=['POST'])
         app.add_url_rule('/steam/<string:guid>', 'delete_steam', self.delete_steam, methods=['DELETE'])
         app.add_url_rule('/steam/analyze/<string:app_id>', 'analyze_sentiment', self.analyze_sentiment, methods=['POST'])
@@ -43,6 +44,36 @@ class SteamAppController:
                 'message': 'Data get successfully',
                 'data': [data.to_dict() for data in result]
             })
+        except Exception as e:
+            return jsonify({
+                'status': 500,
+                'message': f'Error occurred: {str(e)}'
+            }), 500
+
+    def get_reviews(self, app_id: str):
+        """
+            Get Reviews
+            ---
+            tags: ['Steam App']
+            parameters:
+              - name: app_id
+                in: path
+                required: true
+                type: string
+                description: App ID
+            responses:
+                200:
+                    description: Data retrieved successfully
+                500:
+                    description: Internal server error
+        """
+        try:
+            results = self._steam_service.get_reviews_by_app(app_id)
+            return jsonify({
+                'status': 200,
+                'message': 'Data successfully analyzed',
+                'data': [result.__dict__ for result in results]
+            }), 200
         except Exception as e:
             return jsonify({
                 'status': 500,
