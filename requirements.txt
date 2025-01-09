@@ -12,3 +12,4 @@ scikit-learn~=1.6.0
 textblob~=0.18.0.post0
 googletrans~=4.0.2
 nltk~=3.9.1
+cors~=1.0.1

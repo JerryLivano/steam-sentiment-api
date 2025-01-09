@@ -1,3 +1,4 @@
+import CORS
 from flask import redirect
 from app import AppFactory
 from controller.admin_controller import AdminController
@@ -8,6 +9,8 @@ from app.database import Database
 factory = AppFactory()
 Database.create_db_context()
 app = factory.get_app()
+
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 with app.app_context():
     db.create_all()
