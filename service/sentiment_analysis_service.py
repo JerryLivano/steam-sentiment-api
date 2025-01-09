@@ -206,7 +206,7 @@ class SentimentAnalysisService:
         dominant_topic, summary, overall_sentiment, sentiment_percentage = self.summarize_dominant_topic(topic_summaries, cleaned_reviews_df)
 
         return SentimentAnalyzeDto(
-            summary=summary,
-            sentiment=overall_sentiment,
-            percentage=f"{sentiment_percentage:.2f}%"
+            summary=summary if summary else None,
+            sentiment=overall_sentiment if overall_sentiment else None,
+            percentage=f"{sentiment_percentage:.2f}%" if sentiment_percentage else None
         )
