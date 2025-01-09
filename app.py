@@ -1,4 +1,4 @@
-import CORS
+from flask_cors import CORS
 from flask import redirect
 from app import AppFactory
 from controller.admin_controller import AdminController
