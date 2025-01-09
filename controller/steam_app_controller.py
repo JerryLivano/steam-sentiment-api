@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from dto.steam_app.create_steam_dto import CreateSteamDto
 from service.sentiment_analysis_service import SentimentAnalysisService
 from service.steam_app_service import SteamAppService
+import requests
 
 
 class SteamAppController:
@@ -14,6 +15,7 @@ class SteamAppController:
         app.add_url_rule('/steam', 'create_steam', self.create_steam, methods=['POST'])
         app.add_url_rule('/steam/<string:guid>', 'delete_steam', self.delete_steam, methods=['DELETE'])
         app.add_url_rule('/steam/analyze/<string:app_id>', 'analyze_sentiment', self.analyze_sentiment, methods=['POST'])
+        app.add_url_rule('/steam/get_api', 'fetch_steam_app', self.fetch_steam_app, methods=['GET'])
 
     def get_all_steam(self):
         """
@@ -40,6 +42,31 @@ class SteamAppController:
                 'status': 200,
                 'message': 'Data get successfully',
                 'data': [data.to_dict() for data in result]
+            })
+        except Exception as e:
+            return jsonify({
+                'status': 500,
+                'message': f'Error occurred: {str(e)}'
+            }), 500
+
+    def fetch_steam_app(self):
+        """
+            Fetch Steam Apps
+            ---
+            tags: ['Steam App']
+            responses:
+                200:
+                    description: Get all data
+                500:
+                    description: Internal server error
+        """
+        try:
+            response = requests.get('http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key=STEAMKEY&format=json')
+
+            return jsonify({
+                'status': 200,
+                'message': 'Data get successfully',
+                'data': response.json()
             })
         except Exception as e:
             return jsonify({
