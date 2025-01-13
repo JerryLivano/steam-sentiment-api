@@ -150,17 +150,22 @@ class SentimentAnalysisService:
 
         positive_reviews = sentiment_scores[sentiment_scores > 0].count()
         negative_reviews = sentiment_scores[sentiment_scores < 0].count()
+        neutral_reviews = sentiment_scores[sentiment_scores == 0].count()
         total_reviews = sentiment_scores.count()
 
         positive_percentage = (positive_reviews / total_reviews) * 100
         negative_percentage = (negative_reviews / total_reviews) * 100
+        neutral_percentage = (neutral_reviews / total_reviews) * 100
 
-        if positive_percentage > negative_percentage:
+        if (positive_percentage > negative_percentage) and (positive_percentage > neutral_percentage):
             dominant_sentiment = True
             sentiment_percentage = positive_percentage
-        else:
+        elif (negative_percentage > positive_percentage) and (negative_percentage > neutral_percentage):
             dominant_sentiment = False
             sentiment_percentage = negative_percentage
+        else:
+            dominant_sentiment = None
+            sentiment_percentage = neutral_percentage
 
         return dominant_topic, summary, dominant_sentiment, sentiment_percentage
 
