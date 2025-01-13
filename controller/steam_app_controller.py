@@ -93,11 +93,15 @@ class SteamAppController:
         """
         try:
             response = requests.get('http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key=STEAMKEY&format=json')
+            result = response.json()['applist']['apps']
+            index = next((i for i, item in enumerate(result) if item["appid"] == 578080), None)
+            start = index - 3
+            end = index + 16
 
             return jsonify({
                 'status': 200,
                 'message': 'Data get successfully',
-                'data': response.json()['applist']['apps'][216485:216535]
+                'data': response.json()['applist']['apps'][start:end]
             })
         except Exception as e:
             return jsonify({
